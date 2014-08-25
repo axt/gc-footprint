@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.axt.perftest.topnselect.alg.TopNSelectAlg;
-import org.axt.perftest.topnselect.alg.TopNSelect_PQ;
+import org.axt.perftest.topnselect.alg.TopNSelect_QS.ALG;
+import org.axt.perftest.topnselect.alg.TopNSelect_QSFixed;
 import org.axt.perftest.util.GCMeasure;
 import org.axt.perftest.util.GCMeasure.Diff;
 import org.axt.perftest.util.Statistics;
@@ -150,8 +151,8 @@ public class TopNSelectTest {
 			public TopNSelectAlg get(int max, int top) {
 				//return new TopNSelect_QS(ALG.RAND);
 				//return new TopNSelect_QSFixed(ALG.MEDIAN, top);
-				//return new TopNSelect_QSFixed(ALG.MEDIAN, top, 3.0);
-				return new TopNSelect_PQ();
+				return new TopNSelect_QSFixed(ALG.MEDIAN, top, 10.0);
+				//return new TopNSelect_PQ();
 				//return new TopNSelect_PQNat(top);
 			}
 		});

@@ -144,12 +144,8 @@ public class GCMeasure {
 			long sumCommitted = 0;
 			List<MemoryPoolMXBean> mpbs = ManagementFactory.getMemoryPoolMXBeans();
 			for (MemoryPoolMXBean mpb : mpbs) {
-				try {
-					MemoryUsage mu = mpb.getCollectionUsage(); // memory usage after the last collection // can throw exception, see above
-					if (isEden(mpb) && mu != null) sumCommitted += mu.getCommitted();
-				} catch (RuntimeException ex) {
-					// eating this exception -- we don't care, this method is used only by ProbaServlet
-				}
+				MemoryUsage mu = mpb.getCollectionUsage(); // memory usage after the last collection // can throw exception, see above
+				if (isEden(mpb) && mu != null) sumCommitted += mu.getCommitted();
 			}
 			return sumCommitted;
 		}

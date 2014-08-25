@@ -12,13 +12,8 @@ public class TopNSelect_PQNat implements TopNSelectAlg {
 	static class IntDoublePriorityQueue {
 
 		int elementCount = 0;
-
-		private static final int[] EMPTY_INT_ARRAY = new int[0];
-		private static final double[] EMPTY_double_ARRAY = new double[0];
-
-		int[] intarray = EMPTY_INT_ARRAY; // max-heap based structure. array[i] >= max(array[2 *
-											// i + 1], array[2 * i + 2])
-		double[] doublearray = EMPTY_double_ARRAY;
+		int[] intarray; 
+		double[] doublearray;
 
 		final IntDoubleComparator comparator;
 
@@ -29,7 +24,6 @@ public class TopNSelect_PQNat implements TopNSelectAlg {
 			this.comparator = comparator;
 		}
 
-		/** offer() */
 		public void add(int i, double f) {
 			if (elementCount >= intarray.length) {
 				if (comparator.compare(i, f, intarray[0], doublearray[0]) > 0) return;
@@ -42,10 +36,6 @@ public class TopNSelect_PQNat implements TopNSelectAlg {
 			siftUp(idx);
 		}
 
-		/**
-		 * Removes the maximal element of the Queue (according to the IntComparator) -- like
-		 * PriorityQueue.poll() but not the leftmost, but the rightmost element
-		 */
 		public void removeMax() {
 			if (elementCount == 0) throw new NoSuchElementException("Queue is empty");
 
@@ -60,13 +50,11 @@ public class TopNSelect_PQNat implements TopNSelectAlg {
 			siftDown(0, elementCount - 1);
 		}
 
-		/** like PriorityQueue.peek() but not the leftmost, but the rightmost element */
 		public int getIntMax() {
 			if (elementCount == 0) throw new NoSuchElementException("Queue is empty");
 			return intarray[0];
 		}
 
-		/** like PriorityQueue.peek() but not the leftmost, but the rightmost element */
 		public double getdoubleMax() {
 			if (elementCount == 0) throw new NoSuchElementException("Queue is empty");
 			return doublearray[0];
@@ -78,9 +66,8 @@ public class TopNSelect_PQNat implements TopNSelectAlg {
 
 		public void clear() {
 			elementCount = 0;
-		} // FIXME: should we fill the array with zeros? (just for cosmetics)
-
-		/** Note: no ordering is guaranteed */
+		} 
+		
 		public int[] toIntArray() {
 			return Arrays.copyOf(intarray, elementCount);
 		}
@@ -89,7 +76,6 @@ public class TopNSelect_PQNat implements TopNSelectAlg {
 			return Arrays.copyOf(doublearray, elementCount);
 		}
 
-		// sifts down the start-th element, assuming the array[0..end] is only valid
 		private void siftDown(int start, int end) {
 			int root = start;
 			while (root * 2 + 1 <= end) {
@@ -106,7 +92,6 @@ public class TopNSelect_PQNat implements TopNSelectAlg {
 			}
 		}
 
-		// sifts up the start-th element
 		private void siftUp(int start) {
 			while (start > 0) {
 				int parent = (start - 1) / 2;
